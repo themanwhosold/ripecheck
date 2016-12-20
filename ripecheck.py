@@ -45,7 +45,10 @@ print (configFile)
 probeNr = config['Basic']['probeNr']
 probeUrl = 'https://atlas.ripe.net/api/v2/probes/' + probeNr + '?format=json'
 
+# URL for use of Telegram
+telegramUrl = ''
 
+#Check the RIPE Atlas probe
 
 response = urlopen(probeUrl).read()
 content = response
