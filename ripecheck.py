@@ -1,14 +1,16 @@
 #!/usr/bin/python
 # Skript um sicherzustellen, dass meine RIPE Probe online ist...
+# Script to make sure, your ripe probe is online
 # braucht Python Version 3
+# requires python >= 3
 
 import configparser
 from urllib.request import urlopen
 import json
 from subprocess import Popen, PIPE 
 import os
+import argparse #Add User-friendly command line interface
 
-# Konfiguration kann spaeter noch in ein separates File ausgelagert werden
 userHome = os.getenv('HOME')
 configFile = userHome + '/ripecheck.config'
 config = configparser.ConfigParser()
