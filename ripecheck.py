@@ -10,6 +10,7 @@ import json
 from subprocess import Popen, PIPE 
 import os
 import argparse #Add User-friendly command line interface
+import telepot #Needed for Telegram
 
 userHome = os.getenv('HOME')
 
@@ -32,7 +33,7 @@ else:
 # Parse config file 
 config = configparser.ConfigParser()
 config.read(configFile)
-
+print (configFile)
 # If there's an command-line argument for mail, don't check the config file 
 # To do: Verify format of mail address, given in args.mail and configFile perhaps a function would be a nice way to do so
 if args.mail == '':
@@ -40,17 +41,16 @@ if args.mail == '':
 else:
 	mail = args.mail
 
-print (configFile)
-print (mail)
-
 probeNr = config['Basic']['probeNr']
 probeUrl = 'https://atlas.ripe.net/api/v2/probes/' + probeNr + '?format=json'
 
-# URL for use of Telegram
-telegramUrl = 'https://api.telegram.org/' + botID + '/sendMessage?chat_id=' + chatID + '&text="'
+# Telegram
+# The botID comes without leading 'bot'
+botID = config['Telegram']['botID']
+chatID = config['Telegram']['chatID']
+telegramBot = telepot.Bot(botID)
 
 #Check the RIPE Atlas probe
-
 response = urlopen(probeUrl).read()
 content = response
 json_data = json.loads(response.decode('utf-8'))
@@ -59,9 +59,11 @@ if connectionState == 'Connected':
 	#print ("OK")
 	mail = Popen(["mail","-s","RIPE Atlas verbunden",mail],stdin=PIPE,stdout=PIPE)
 	mail.communicate(response)
+	telegramBot.sendMessage(chatID, 'RIPE Atlas verbunden')
 else:
 	#print ("Fehler")
 	mail = Popen(["mail","-s","RIPE Atlas nicht mehr verbunden",mail],stdin=PIPE,stdout=PIPE)
 	mail.communicate(response)
+	telegramBot.sendMessage(chatID, 'RIPE Atlas nicht verbunden')
 #print (content)
 #print (json_data['status']['name'])

@@ -2,8 +2,8 @@
 A short python status check for your RIPE Atlas probe
 
 ##Requirements
-The script needs Python 3.x, it won't work with Python 2.x
-
+* Python >= 3.x, it won't work with Python 2.x
+* Telepot (pip install telepot)
 ##Usage
 Crontab entry to run the script every hour at xx:00:
 0 * * * * /usr/bin/python3.4 <path-to-script>/ripecheck.py
