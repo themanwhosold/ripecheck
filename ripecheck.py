@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Skript um sicherzustellen, dass meine RIPE Probe online ist...
 # Script to make sure, your ripe probe is online
-# braucht Python Version 3
+# benötigt Python >= 3
 # requires python >= 3
 
 import configparser
@@ -14,11 +14,16 @@ import argparse #Add User-friendly command line interface
 # Parse command line arguments
 commandLineParser = argparse.ArgumentParser(description='Script to check status of your Atlas RIPE probe')
 commandLineParser.add_argument('--mail',metavar='mail',type=str,help='A mail addy to send the status mails to')
+commandLineParser.add_argument('--config',metavar='config',type=str,help='Path to config file, if this parameter is not given, the config file is ~/ripecheck.config')
 args = commandLineParser.parse_args()
 print ('Mail from command line argument: ' + args.mail)
 
 userHome = os.getenv('HOME')
-configFile = userHome + '/ripecheck.config'
+if args.config == '':
+	configFile = userHome + '/ripecheck.config'
+else:
+	# Add some path checks here
+	configFile = args.config
 config = configparser.ConfigParser()
 config.read(configFile)
 # If there's an command-line argument for mail, don't check the config file 
