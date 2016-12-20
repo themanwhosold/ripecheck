@@ -12,10 +12,10 @@ Crontab entry to run the script every hour at xx:00:
 
 Run the script manually, just replace the python version with your version number and the path with your path
 
-python3.4 /<path-to-script>/ripecheck.py
+python3.4 /\<path-to-script\>/ripecheck.py
 
 or
  
-python3.4 /<path-to-script>/ripecheck.py 2>&1> /dev/null
+python3.4 /\<path-to-script\>/ripecheck.py 2>&1> /dev/null
 
 if you don't want to see the output of the script
