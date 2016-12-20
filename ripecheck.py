@@ -34,6 +34,7 @@ config = configparser.ConfigParser()
 config.read(configFile)
 
 # If there's an command-line argument for mail, don't check the config file 
+# To do: Verify format of mail address, given in args.mail and configFile perhaps a function would be a nice way to do so
 if args.mail == '':
 	mail = config['Basic']['mail']
 else:
