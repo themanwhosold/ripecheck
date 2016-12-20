@@ -11,15 +11,26 @@ from subprocess import Popen, PIPE
 import os
 import argparse #Add User-friendly command line interface
 
+# Parse command line arguments
+commandLineParser = argparse.ArgumentParser(description='Script to check status of your Atlas RIPE probe')
+commandLineParser.add_argument('--mail',metavar='mail',type=str,help='A mail addy to send the status mails to')
+args = commandLineParser.parse_args()
+print ('Mail from command line argument: ' + args.mail)
+
 userHome = os.getenv('HOME')
 configFile = userHome + '/ripecheck.config'
 config = configparser.ConfigParser()
 config.read(configFile)
-mail = config['Basic']['mail']
+# If there's an command-line argument for mail, don't check the config file 
+if args.mail == '':
+	mail = config['Basic']['mail']
+else:
+	mail = args.mail
 probeNr = config['Basic']['probeNr']
 probeUrl = 'https://atlas.ripe.net/api/v2/probes/' + probeNr + '?format=json'
 
-# Evtl. machts Sinn JSON zu benutzen https://atlas.ripe.net/api/v2/probes/29535?format=json
+
+
 response = urlopen(probeUrl).read()
 content = response
 json_data = json.loads(response.decode('utf-8'))
