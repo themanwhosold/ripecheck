@@ -11,26 +11,36 @@ from subprocess import Popen, PIPE
 import os
 import argparse #Add User-friendly command line interface
 
-# Parse command line arguments
-commandLineParser = argparse.ArgumentParser(description='Script to check status of your Atlas RIPE probe')
-commandLineParser.add_argument('--mail',metavar='mail',type=str,help='A mail addy to send the status mails to')
-commandLineParser.add_argument('--config',metavar='config',type=str,help='Path to config file, if this parameter is not given, the config file is ~/ripecheck.config')
-args = commandLineParser.parse_args()
-print ('Mail from command line argument: ' + args.mail)
-
 userHome = os.getenv('HOME')
+
+# Parse command line arguments
+
+commandLineParser = argparse.ArgumentParser(description='Script to check status of your Atlas RIPE probe')
+commandLineParser.add_argument('-m','--mail',type=str,help='A mail addy to send the status mails to')
+configFile = userHome + '/ripecheck.config'
+commandLineParser.add_argument('-c','--config',type=str,help='Path to config file, if this parameter is not given, the config file is ~/ripecheck.config',default = configFile)
+
+args = commandLineParser.parse_args()
+
+# Do some stuff with the parsed command line arguments
+# To do: add some checks if the given config file path is valid
 if args.config == '':
-	configFile = userHome + '/ripecheck.config'
+	configFile = configFile
 else:
-	# Add some path checks here
 	configFile = args.config
+
+# Parse config file 
 config = configparser.ConfigParser()
 config.read(configFile)
+
 # If there's an command-line argument for mail, don't check the config file 
 if args.mail == '':
 	mail = config['Basic']['mail']
 else:
 	mail = args.mail
+
+print (configFile)
+
 probeNr = config['Basic']['probeNr']
 probeUrl = 'https://atlas.ripe.net/api/v2/probes/' + probeNr + '?format=json'
 
