@@ -16,9 +16,9 @@ userHome = os.getenv('HOME')
 # Parse command line arguments
 
 commandLineParser = argparse.ArgumentParser(description='Script to check status of your Atlas RIPE probe')
-commandLineParser.add_argument('-m','--mail',type=str,help='A mail addy to send the status mails to')
+commandLineParser.add_argument('-m','--mail',type=str,help='A mail addy to send the status mails to', default = '')
 configFile = userHome + '/ripecheck.config'
-commandLineParser.add_argument('-c','--config',type=str,help='Path to config file, if this parameter is not given, the config file is ~/ripecheck.config',default = configFile)
+commandLineParser.add_argument('-c','--config',type=str,help='Path to config file, if this parameter is not given, the config file is ~/ripecheck.config',default = '')
 
 args = commandLineParser.parse_args()
 
@@ -41,11 +41,15 @@ else:
 	mail = args.mail
 
 print (configFile)
+print (mail)
 
 probeNr = config['Basic']['probeNr']
 probeUrl = 'https://atlas.ripe.net/api/v2/probes/' + probeNr + '?format=json'
 
+# URL for use of Telegram
+telegramUrl = ''
 
+#Check the RIPE Atlas probe
 
 response = urlopen(probeUrl).read()
 content = response
