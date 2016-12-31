@@ -56,10 +56,10 @@ content = response
 json_data = json.loads(response.decode('utf-8'))
 connectionState = json_data['status']['name']
 if connectionState == 'Connected': 
-	#print ("OK")
-	mail = Popen(["mail","-s","RIPE Atlas verbunden",mail],stdin=PIPE,stdout=PIPE)
-	mail.communicate(response)
-	telegramBot.sendMessage(chatID, 'RIPE Atlas verbunden')
+	print ("OK")
+	#mail = Popen(["mail","-s","RIPE Atlas verbunden",mail],stdin=PIPE,stdout=PIPE)
+	#mail.communicate(response)
+	#telegramBot.sendMessage(chatID, 'RIPE Atlas verbunden')
 else:
 	#print ("Fehler")
 	mail = Popen(["mail","-s","RIPE Atlas nicht mehr verbunden",mail],stdin=PIPE,stdout=PIPE)
